@@ -1,0 +1,83 @@
+// Constraint to randomly populate a MxN array with 1s
+// This only works for VCS. Fails for Cadence
+class random_1s;
+  parameter M = 5;
+  parameter N = 5;
+  
+  rand int total_ones;
+  rand bit random_ones [M][N];
+  
+  constraint total_ones_c {
+    total_ones inside {[0:M*N-1]};  
+  }
+  
+  constraint random_ones_c {
+    random_ones.sum() with (int'(item==1)) == total_ones; 
+  }
+  
+  constraint solve_before_c {
+   solve total_ones before random_ones; 
+  }
+  
+  function void print();
+    $display(total_ones);
+    foreach(random_ones[i]) begin
+      $display("%p",random_ones[i]);
+    end
+  endfunction : print
+endclass : random_1s
+
+module tb();
+  random_1s r;
+  
+  initial begin
+    r = new();
+    
+    r.randomize();
+    
+    r.print();
+  end
+endmodule : tb
+
+// Constraint to randomly populate a MxN array with 1s
+// This only works for Questa & Cadence. Fails for VCS
+// Code your testbench here
+// or browse Examples
+class random_1s;
+  parameter M = 5;
+  parameter N = 5;
+  
+  rand int total_ones;
+  rand bit random_ones [M][N];
+  
+  constraint total_ones_c {
+    total_ones inside {[0:M*N-1]};  
+  }
+  
+  constraint random_ones_c {
+    random_ones.sum() with (int'(item.sum() with (int'(item==1)))) == total_ones; 
+  }
+  
+  constraint solve_before_c {
+   solve total_ones before random_ones; 
+  }
+  
+  function void print();
+    $display(total_ones);
+    foreach(random_ones[i]) begin
+      $display("%p",random_ones[i]);
+    end
+  endfunction : print
+endclass : random_1s
+
+module tb();
+  random_1s r;
+  
+  initial begin
+    r = new();
+    
+    r.randomize();
+    
+    r.print();
+  end
+endmodule : tb
