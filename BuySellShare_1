@@ -1,0 +1,47 @@
+// Get maximum profit from buying and selling stocks
+// Provided you can only hold one stock at a time
+class stock_trade;
+             // No. of transactions possible  // Array of sequence
+  int profit []                               [];
+
+  function int max_profit(int price []);
+    int gain;
+    int low_val, high_val;
+    int curr_ptr, nxt_ptr;
+    int min [$]
+    int max [$];
+    int transaction;
+
+    curr_ptr = 0;
+    nxt_ptr = 1;
+    transaction = 0;
+    profit = new[1];
+    profit[0] = {price[curr_ptr]};
+    while(1) begin
+      low_val = price[curr_ptr];
+      high_val= price[nxt_ptr];
+
+      if ((low_val >= high_val) || (profit.size() && (high_val < profit[transaction][profit[transaction].size()-1)))) begin
+        curr_ptr = nxt_ptr;
+        nxt_ptr += 1;
+        transaction += 1;
+        profit = new[profit.size()+1](profit);
+        profit[transaction] = {price[curr_ptr]};
+      end else begin
+        profit[transaction] = {profit[transaction], high_val};
+        nxt_ptr += 1;
+      end
+
+      if (curr_ptr >= price.size() || nxt_ptr >= price.size()) break;
+    end
+
+    foreach(profit[i,]) begin
+      if (profit[i].size() > 1) begin
+        min = profit[i].min();
+        max = profit[i].max();
+        gain+= (max.pop_front() - min.pop_front());
+      end
+    end
+    return gain;
+  endfunction : max_profit
+endclass : stock_trade
