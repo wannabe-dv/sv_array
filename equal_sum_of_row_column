@@ -1,0 +1,16 @@
+// Write a constraint to randomize a M x N array such that each element is unique and sum of each row and sum of each column is the same
+
+localparam M = 4;
+localparam N= 4;
+
+rand bit [3:0] array [M][N];
+
+constraint array_c {
+  unique {array};
+  foreach(array[m]) {
+    m > 0 -> array[m].sum() == array[m-1].sum();
+    foreach(array[,n]) {
+      array.sum() with (int'(item[n])) == array[m].sum();
+    }
+  }
+}
