@@ -1,0 +1,46 @@
+class minimum #(int M);
+  
+  rand int array [M];
+  
+  constraint range_c {
+    foreach(array[i]) array[i] inside {[0:100]};
+  }
+  
+  function find_minimum();
+    int min;
+    int min_index;
+    min = array[0];
+    min_index = 0;
+    for (int i=1; i<M; i++) begin
+      if (array[i] < min) begin
+        {min_index, min} = {i,array[i]};
+      end
+    end
+    $display("Minimum from array %p is %0d (index %0d)",array,min,min_index);
+  endfunction : find_minimum
+  
+  function find_2nd_minimum();
+    int min [2];
+    int min_index [2];
+    if (array[0] < array[1]) begin
+      min_index = {0,1};
+      min = {array[0], array[1]};
+    end else begin
+      min_index = {1,0};
+      min = {array[1], array[0]};
+    end
+
+    for (int i=2; i<M; i++) begin
+      if (array[i] < min[1]) begin
+        if (array[i] < min[0] ) begin
+          min = {array[i],min[0]};
+          min_index = {i, min_index[0]};
+        end else begin
+          min[1] = array[i];
+          min_index[1] = i;
+        end
+      end
+    end
+    $display("2nd minimum from array %p is %0d (index %0d)",array,min[1],min_index[1]);
+  endfunction : find_2nd_minimum
+endclass : minimum
