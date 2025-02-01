@@ -1,0 +1,50 @@
+class maximum #(int M);
+  
+  rand int array [M];
+  
+  constraint range_c {
+    foreach(array[i]) array[i] inside {[0:100]};
+  }
+  
+  function find_maximum();
+    int max;
+    int max_index;
+    max = array[0];
+    max_index = 0;
+    for (int i=1; i<M; i++) begin
+      if (array[i] > max) begin
+        {max_index, max} = {i,array[i]};
+      end
+    end
+    $display("Maximum from array %p is %0d (index %0d)",array,max,max_index);
+  endfunction : find_maximum
+  
+  function find_2nd_maximum();
+    int max [2];
+    int max_index [2];
+    if (array[0] > array[1]) begin
+      max_index = {0,1};
+      max = array[0:1];
+      $display("%p",max);
+      //min = {array[0], array[1]};
+    end else begin
+      max_index = {1,0};
+      max = {<<32{array[0:1]}};
+      $display("%p",max);
+      //min = {array[1], array[0]};
+    end
+
+    for (int i=2; i<M; i++) begin
+      if (array[i] > max[1]) begin
+        if (array[i] > max[0] ) begin
+          max = {array[i],max[0]};
+          max_index = {i, max_index[0]};
+        end else begin
+          max[1] = array[i];
+          max_index[1] = i;
+        end
+      end
+    end
+    $display("2nd maximum from array %p is %0d (index %0d)",array,max[1],max_index[1]);
+  endfunction : find_2nd_maximum
+endclass : maximum
