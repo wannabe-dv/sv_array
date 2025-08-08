@@ -14,3 +14,29 @@ constraint array_c {
     }
   }
 }
+
+  rand int arr [M][N];
+  rand int transpose_arr [N][M];
+  
+  constraint arr_unique_c {
+    foreach(arr[i,j]) arr[i][j] inside {[0:M*N-1]};
+    unique{arr};
+  }
+
+  constraint transpose_arr_unique_c {
+    foreach(transpose_arr[i,j]) transpose_arr[i][j] inside {[0:M*N-1]};
+  }
+  
+  constraint transpose_arr_c {
+    foreach(arr[i,j]) arr[i][j] == transpose_arr[j][i];
+  }
+  
+  constraint arr_sum_c {
+    foreach(arr[i])
+      (arr.sum() with (int'(item[i]))) == (transpose_arr.sum() with (int'(item[i])));
+  }
+  
+  constraint arr_equal_sum_c {
+    foreach(arr[i])
+      i > 0 -> arr[i].sum() == arr[i-1].sum();
+  }
