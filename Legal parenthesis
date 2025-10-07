@@ -1,0 +1,20 @@
+Generate valid parenthesis
+Example: If length is 6, all of these valid combinations must be generated ()()(), ((())), (())(), ()(())
+
+class P;
+    rand bit signed [1:0] parens[];
+    function new;
+      parens = new[6];
+    endfunction
+    constraint c {
+      foreach(parens[i]){
+        // 1 is open, -1 is close parenthesis
+        parens[i] inside {1,-1};
+        // can never have more close than open parenthesis in sequence
+        parens.sum() with(item.index<=i? int'(item) : 0) >= 0;
+      }
+      // number of open and close parenthesis must be equal
+      parens.sum() with (int'(item)) == 0;
+
+    }
+endclass
