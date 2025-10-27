@@ -1,0 +1,10 @@
+int image [M][N]
+
+int line;
+
+for int (row=0; row<M; row++) begin
+  for (int col=0; col<N; col++) begin
+    line [(col+shift_val) % N] = image[row][col];
+  end
+  image[row] = line;
+end
